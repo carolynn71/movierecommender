@@ -1,0 +1,48 @@
+# 🎬 Movie Recommendation System using NLP & Cosine Similarity
+
+This project is a **Content-Based Movie Recommender System** built using Python, Pandas, Scikit-learn, and Natural Language Processing (NLP) techniques. It suggests similar movies based on the combination of genre and overview using cosine similarity.
+
+---
+
+## 💡 Features
+
+- Combines `genre` and `overview` into a new `tags` feature.
+- Uses `CountVectorizer` for feature extraction (Bag-of-Words model).
+- Computes cosine similarity to find related movies.
+- Recommends top 5 similar movies based on the given title.
+
+---
+
+## 🛠️ Technologies Used
+
+- Python
+- Pandas
+- NumPy
+- Scikit-learn (`CountVectorizer`, `cosine_similarity`)
+
+---
+
+## 📁 Dataset
+
+- The dataset should be named `dataset.csv`.
+- Required columns:
+  - `id`
+  - `title`
+  - `genre`
+  - `overview`
+
+---
+
+## 🚀 How it Works
+
+```python
+def recommend(movie):
+    movie_lower = movie.lower()
+    if movie_lower in new_df['title'].str.lower().values:
+        index = new_df[new_df['title'].str.lower() == movie_lower].index[0]
+        dist = sorted(list(enumerate(sin[index])), reverse=True, key=lambda vec:vec[1]) 
+        print(f"Recommendations for '{movie}':")
+        for i in dist[1:6]: 
+            print(new_df.iloc[i[0]].title)
+    else:
+        print(f"Movie '{movie}' not found in the dataset.")
