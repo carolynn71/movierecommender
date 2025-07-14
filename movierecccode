@@ -1,0 +1,35 @@
+import pandas as pd 
+import numpy as np 
+movies=pd.read_csv('dataset.csv')
+movies.head()
+movies.columns
+movies.info()
+movies['tags']= movies['genre']+ movies['overview']
+movies.head()
+new_df = movies[['id','title','tags']]
+new_df.head()
+from sklearn.feature_extraction.text import CountVectorizer
+cv = CountVectorizer(max_features=10000,stop_words='english')
+cv
+vec=cv.fit_transform(new_df['tags'].values.astype('U')).toarray()
+vec
+vec.shape
+from sklearn.metrics.pairwise import cosine_similarity
+sin=cosine_similarity(vec)
+sin
+new_df[new_df['title']=='The Shawshank Redemption']
+dist=sorted(list(enumerate(sin[0])),reverse=True,key=lambda vec:vec[1])
+dist
+for i in dist[0:5]:
+    print(new_df.iloc[i[0]].title)
+def recommend(movie):
+    movie_lower = movie.lower()
+    if movie_lower in new_df['title'].str.lower().values:
+        index = new_df[new_df['title'].str.lower() == movie_lower].index[0]
+        dist = sorted(list(enumerate(sin[index])), reverse=True, key=lambda vec:vec[1]) 
+        print(f"Recommendations for '{movie}':")
+        for i in dist[1:6]: 
+            print(new_df.iloc[i[0]].title)
+    else:
+        print(f"Movie '{movie}' not found in the dataset.")
+recommend("Iron man")
